@@ -67,15 +67,15 @@ const CartProvider = (props) => {
   }
 
   const getProductFromSlug = (slug) => {
-    return inventory.filter((p) => p.slug === slug)[0]
+    return inventory.find((p) => p.slug === slug)
   }
 
   const getProductFromId = (id) => {
-    return inventory.filter((product) => product.id === id)[0]
+    return inventory.find((product) => product.id === id)
   }
 
-  // Returns the total quantity of products in cart
   const getTotalCartQuantity = () => {
+    // Returns the total quantity of products in cart
     return cart.length === 0
       ? 0
       : cart.reduce((a, b) => ({ quantity: a.quantity + b.quantity }), { quantity: 0 }).quantity
