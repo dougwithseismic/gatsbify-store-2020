@@ -1,7 +1,7 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/ssr-apis/
- */
+// We're wrapping everything in our Providers so we can consume them on all pages
+// Eventually we'll have i8n translations in here, too.
 
-// You can delete this file if you're not using it
+import React from 'react'
+import { CartProvider } from './src/context/cartContext'
+
+export const wrapRootElement = ({ element }) => <CartProvider>{element}</CartProvider>

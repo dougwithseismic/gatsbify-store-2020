@@ -4,7 +4,7 @@ import { Link } from 'gatsby'
 import Layout from '../components/layout'
 import Image from '../components/image'
 import SEO from '../components/seo'
-import CartContext from '../context/CartContext'
+import CartContext from '../context/cartContext'
 
 const IndexPage = () => {
   const cartContext = useContext(CartContext)

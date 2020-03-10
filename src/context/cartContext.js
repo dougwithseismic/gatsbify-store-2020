@@ -1,3 +1,5 @@
+import React, { createContext, useState, useEffect } from 'react'
+
 // Holds all the functions and logic required to let the cart feature work.
 /* 
 
@@ -6,20 +8,28 @@ Features:
 [☑] - amendCart(uid, method) // Adds or removes items from cart, based on UID. 
 [☑] - resetCart() // Clears cart
 [ ] - getProduct(input, method?) // getProduct(uid) or getProduct('fancy-green-turtleneck', 'slug')
-[ ] - getCartTotal() // Returns sum of cart item prices
+[☑] - getTotalCartQuantity() // Returns sum of cart quanitities
 
 
 Considerations - 
 
-[] - Undo history for massive user QOL upgrade?
+[ ] - Undo history for massive user QOL upgrade?
 [☑] - Local storage for cross-session cart saves
-*/
 
-import React, { createContext, useState, useEffect } from 'react'
+TODO:
+Enhanced Ecommerce events
+
+*/
 
 const defaultState = {
   cart: []
 }
+
+const inventory = [
+  { uid: 1001, name: 'comfy chair', slug: 'comfy-chair-1', price: 150, categories: [ 'chair', 'desk', 'gaming' ] },
+  { uid: 1002, name: 'notsocomfy chair', slug: 'comfy-chair-2', price: 50, categories: [ 'chair', 'desk', 'ugly' ] },
+  { uid: 1003, name: 'Just right chair', slug: 'comfy-chair-3', price: 87.5, categories: [ 'chair', 'desk', 'gaming' ] }
+]
 
 const CartContext = createContext(defaultState)
 const STORAGE_KEY = '_GATSBIFY_STORE'
@@ -42,8 +52,8 @@ const CartProvider = (props) => {
     }
   }, [])
 
+  // Every time the cart gets updated, we might as well update the localStorage too.
   useEffect(
-    // Every time the cart gets updated, we might as well update the localStorage too.
     () => {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart }))
     },
@@ -56,11 +66,26 @@ const CartProvider = (props) => {
     return cart.find((product) => product.uid === uid)
   }
 
+  const getProductFromSlug = (slug) => {
+    return inventory.filter((p) => p.slug === slug)[0]
+  }
+
+  const getProductFromId = (id) => {
+    return inventory.filter((product) => product.id === id)[0]
+  }
+
+  // Returns the total quantity of products in cart
+  const getTotalCartQuantity = () => {
+    return cart.length === 0
+      ? 0
+      : cart.reduce((a, b) => ({ quantity: a.quantity + b.quantity }), { quantity: 0 }).quantity
+  }
+
   const amendCart = (uid, method) => {
     // Adds or Removes a product from cart.
     // uid: Unique Product Id
     // method: 'add', 'remove'
-    
+
     const foundProduct = findProductInCart(uid)
 
     // Checks whether product already exists in cart
@@ -107,7 +132,10 @@ const CartProvider = (props) => {
       value={{
         cart,
         amendCart,
-        resetCart
+        resetCart,
+        getTotalCartQuantity,
+        getProductFromSlug,
+        getProductFromId
       }}
     >
       {children}
@@ -116,5 +144,4 @@ const CartProvider = (props) => {
 }
 
 export default CartContext
-
 export { CartProvider }
