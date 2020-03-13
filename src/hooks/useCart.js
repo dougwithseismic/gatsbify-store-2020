@@ -68,6 +68,7 @@ const reducer = (state, action) => {
       const previous = past[past.length - 1]
       const newPast = past.slice(0, past.length - 1)
 
+
       return {
         ...state,
         past: newPast,
@@ -123,7 +124,8 @@ const reducer = (state, action) => {
       if (foundProduct) {
         if (foundProduct.quantity === 1 || nuke) {
           const updatedCart = cart.filter((product) => product.uid !== foundProduct.uid)
-          return { ...state, cart: updatedCart, past: [ ...past, ...copiedCart ] }
+          console.log('copiedCart :', copiedCart);
+          return { ...state, cart: updatedCart, past: [ ...past, copiedCart ] }
         } else {
           foundProduct.quantity -= 1
           return { ...state, cart, past: [ ...past, copiedCart ] }

@@ -9,7 +9,6 @@
 </h1>
 
 
-
 A  CMS agnostic JAMstack commerce platform built on React & Gatsbify, designed (for Shopify) with marketing teams in mind.
 Rapid sites, 100 100 100 Lightspeed sites with perfect SEO, Analytics and TPT integration - MINIMAL configuration required.
 
@@ -42,8 +41,9 @@ Development -
 Headless Components by default: HOC components that pass down product information as props so you can keep logic going whilst rendering your own JSX.
 // https://medium.com/merrickchristensen/headless-user-interface-components-565b0c0f2e18
 
+Integrates with: 
 
-Accessing the cart
+* https://subscribers.com/
 
 ```javaScript
 import CartContext from '../context/CartContext'
