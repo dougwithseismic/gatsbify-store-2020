@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import CartContext from '../../../context/cartContext'
 
 const NavigationBar = (props) => {
-const cartContext = useContext(CartContext)
+  const { getCartTotalQuantity } = useContext(CartContext)
   return (
     <header>
       <div className="top-bar">
@@ -30,7 +30,7 @@ const cartContext = useContext(CartContext)
         <div className="navbar-right">
           <div className="navbar-search">Search for products</div>
           <div className="navbar-favourite">Heart</div>
-          <div className="navbar-cart">{cartContext.getTotalCartQuantity()}!</div>
+          <div className="navbar-cart">{getCartTotalQuantity()}</div>
         </div>
       </div>
     </header>

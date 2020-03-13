@@ -7,18 +7,24 @@ import SEO from '../components/seo'
 import CartContext from '../context/cartContext'
 
 const IndexPage = () => {
-  const cartContext = useContext(CartContext)
+  const { cart } = useContext(CartContext)
 
   return (
     <Layout>
       <SEO title="Home" />
       <h1>Hi people</h1>
-      <p>{JSON.stringify(cartContext.cart)}.</p>
-      <button onClick={() => cartContext.amendCart(1001, 'add')}>Add Product 1001 to Card</button>
-      <button onClick={() => cartContext.amendCart(1002, 'add')}>Add Product 1002 to Card</button>
-      <button onClick={() => cartContext.amendCart(1001, 'remove')}>Remove Product 1001 to Card</button>
-      <button onClick={() => cartContext.amendCart(1002, 'remove')}>Remove Product 1002 to Card</button>
-      <button onClick={() => cartContext.resetCart()}>Reset Cart</button>
+      <button onClick={() => cart.addToCart(1001)}>Add 1001 Cart</button>
+      <button onClick={() => cart.addToCart(1234)}>Add 1234 Cart</button>
+      <button onClick={() => cart.removeFromCart(1001)}>Remove 1001 Cart</button>
+      <button onClick={() => cart.removeFromCart(1234)}>Remove 1234 Cart</button>
+      <button onClick={() => cart.undoCart()}>Undo Cart</button>
+      <button onClick={() => cart.redoCart()}>Redo Cart</button>
+      <button onClick={() => cart.clearCart()}>Clear Cart</button>
+
+      <p>Undo History: {JSON.stringify(cart.past)}</p>
+      <p>Current Cart : {JSON.stringify(cart.getCart())}</p>
+      <p>Future Cart : {JSON.stringify(cart.future)}</p>
+
       <p>Now go build something great.</p>
       <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
         <Image />

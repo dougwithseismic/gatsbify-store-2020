@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
 
   return (
     <Fragment>
-      <Navigation />
+      {/* <Navigation /> */}
       <Header siteTitle={data.site.siteMetadata.title} />
       <div
         style={{
