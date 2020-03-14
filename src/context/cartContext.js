@@ -38,35 +38,8 @@ const defaultState = {
 const CartContext = createContext(defaultState)
 
 const CartProvider = (props) => {
-  const STORAGE_KEY = '_GATSBIFY_STORE'
   const cart = useCart([])
   const { children } = props
-
-  useEffect(() => {
-    // If we're a returning visitor, we'll want to grab our previous cart, saved in localStorage.
-    // If this is our first session and there's no local storage, let's create it.
-    if (typeof window !== 'undefined') {
-      const cartStorage = window.localStorage.getItem(STORAGE_KEY) // Checks localStorage for our cart.
-
-      // if no existing Cart is stored then create and store the default, empty cart.
-      if (!cartStorage) {
-        console.log('No localStorage - Creating')
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart: cart.cart }))
-      } else {
-        console.log('Found Local Storage')
-
-        cart.setCart(JSON.parse(window.localStorage.getItem(STORAGE_KEY)).cart)
-      }
-    }
-  }, [])
-
-  // useEffect #2 - Every time the cart gets updated, we might as well update the localStorage and our cart History, too.
-  useEffect(
-    () => {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart: cart.cart }))
-    },
-    [ cart ]
-  )
 
   return (
     <CartContext.Provider

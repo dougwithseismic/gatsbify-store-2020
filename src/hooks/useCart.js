@@ -1,5 +1,5 @@
 import { useState, useReducer, useCallback, useEffect } from 'react'
-import inventory from '../providers/inventory'
+import { inventory } from '../providers/inventory'
 
 // The useCart hook has all cart functionality plus a cart history for undo/redo.
 
@@ -11,12 +11,13 @@ import inventory from '../providers/inventory'
 
 [☑] - getProductFromSlug(String!) // getProductFromSlug('comfy-chair-1') 
 [☑] - getProductFromId(input) // getProductFromId(uid) 
-[☑] - getCartTotalQuantity() // Returns sum of cart quanitities
+[☑] - getCartQuantity() // Returns sum of cart quanitities
 [☑] - getCartTotalPrice() // Returns sum of cart price 
+[☑] - getDetailedCart() // Returns cart with all data pulled from inventory. 
 
 
 Considerations - 
-[ ] - Undo history for massive user QOL upgrade?
+[☑] - Undo history
 [☑] - Local storage for cross-session cart saves
 
 */
@@ -33,7 +34,7 @@ const reducer = (state, action) => {
   const { cart, past, future } = state
   const { uid } = action
 
-  // This was HELL to figure out! I needed to clone a copy of the cart without reference.
+  // This was HELL to figure out! I needed to clone a copy of the cart without reference or the history would get updated instead of satay stuck in time
   const copiedCart = cart.map((object) => ({ ...object }))
 
   const findProductInCart = (uid) => {
@@ -44,14 +45,16 @@ const reducer = (state, action) => {
 
   switch (action.type) {
     case 'SET_CART':
-      const { newCart } = action
+      const { newCart, pastCart } = action
 
       if (newCart === cart) {
         return state
       }
 
+      const setNewPast = pastCart ? pastCart : [ ...past, cart ] // Hacky way of making sure we have a totally clear past, instead of  an initial empty array
+
       return {
-        past: [ ...past, cart ],
+        past: setNewPast,
         cart: newCart,
         future: []
       }
@@ -63,11 +66,9 @@ const reducer = (state, action) => {
         future: []
       }
 
-    // TODO: Some kind of logic that limits the length of the past / future
     case 'UNDO_CART':
       const previous = past[past.length - 1]
       const newPast = past.slice(0, past.length - 1)
-
 
       return {
         ...state,
@@ -124,7 +125,7 @@ const reducer = (state, action) => {
       if (foundProduct) {
         if (foundProduct.quantity === 1 || nuke) {
           const updatedCart = cart.filter((product) => product.uid !== foundProduct.uid)
-          console.log('copiedCart :', copiedCart);
+          console.log('copiedCart :', copiedCart)
           return { ...state, cart: updatedCart, past: [ ...past, copiedCart ] }
         } else {
           foundProduct.quantity -= 1
@@ -137,9 +138,36 @@ const reducer = (state, action) => {
 
 // useCart Hook
 
-const useCart = (initialCart) => {
+const useCart = () => {
   const [ state, dispatch ] = useReducer(reducer, { ...defaultState })
-  console.log('state :', state)
+  const STORAGE_KEY = '_GATSBIFY_STORE'
+
+  useEffect(() => {
+    // If we're a returning visitor, we'll want to grab our previous cart, saved in localStorage. Ift not, let's create a localStorage cart.
+    // TODO: Store baskets in db and use a token instead of an object
+    if (typeof window !== 'undefined') {
+      const cartStorage = window.localStorage.getItem(STORAGE_KEY) // Checks localStorage for our cart.
+
+      // if no existing Cart is stored then create and store the default, empty cart.
+      if (!cartStorage) {
+        console.log('No localStorage - Creating')
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart: state.cart }))
+      } else {
+        let localCart = JSON.parse(window.localStorage.getItem(STORAGE_KEY)).cart
+        console.log('Found Local Storage:', localCart)
+
+        dispatch({ type: 'SET_CART', newCart: localCart, pastCart: [] })
+      }
+    }
+  }, [])
+
+  // useEffect #2 - Every time the cart gets updated, we might as well update the localStorage and our cart History, too.
+  useEffect(
+    () => {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart: state.cart }))
+    },
+    [ state ]
+  )
 
   // Let's keep our history managable by only allowing X actions to be stored!
   if (state.past.length > historyLength) {
@@ -148,7 +176,6 @@ const useCart = (initialCart) => {
 
   const canUndo = state.past.length !== 0
   const canRedo = state.future.length !== 0
-
 
   const clearHistory = useCallback(
     () => {
@@ -207,11 +234,35 @@ const useCart = (initialCart) => {
     [ dispatch ]
   )
 
-  const getCartTotalQuantity = () => {
-    // Returns the total quantity of products in cart
+  const getProductFromSlug = (slug) => {
+    return inventory.find((p) => p.slug === slug)
+  }
+  const getProductFromId = (uid) => {
+    return inventory.find((product) => product.uid === uid)
+  }
+
+  const getDetailedCart = () => {
+    let detailedCart = state.cart.map((cartItem) => {
+      return {
+        ...getProductFromId(cartItem.uid),
+        quantity: cartItem.quantity,
+        totalPrice: cartItem.quantity * getProductFromId(cartItem.uid).price
+      }
+    })
+
+    return detailedCart
+  }
+
+  const getCartQuantity = () => {
     return state.cart.length === 0
       ? 0
       : state.cart.reduce((a, b) => ({ quantity: a.quantity + b.quantity }), { quantity: 0 }).quantity
+  }
+
+  const getCartTotalPrice = () => {
+    return state.cart.reduce((a, b) => {
+      return a + getProductFromId(b.uid).price * b.quantity
+    }, 0)
   }
 
   return {
@@ -226,7 +277,11 @@ const useCart = (initialCart) => {
     addToCart,
     removeFromCart,
     getCart,
-    getCartTotalQuantity
+    getCartQuantity,
+    getProductFromSlug,
+    getProductFromId,
+    getDetailedCart,
+    getCartTotalPrice
   }
 }
 

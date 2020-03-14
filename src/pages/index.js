@@ -24,6 +24,8 @@ const IndexPage = () => {
       <p>Undo History: {JSON.stringify(cart.past)}</p>
       <p>Current Cart : {JSON.stringify(cart.getCart())}</p>
       <p>Future Cart : {JSON.stringify(cart.future)}</p>
+      <p>Cart Quantity: {cart.getCartQuantity()}</p>
+      <p>Detailed Cart: {JSON.stringify(cart.getDetailedCart())}</p>
 
       <p>Now go build something great.</p>
       <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
