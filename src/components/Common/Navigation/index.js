@@ -2,12 +2,13 @@ import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import CartContext from '../../../context/cartContext'
 
-const NavigationBar = (props) => {
-  const { getCartTotalQuantity } = useContext(CartContext)
-  return (
-    <header>
+const NavigationBar = () => {
+  const { cart } = useContext(CartContext)
+
+  const TopBar = ({ message }) => {
+    return (
       <div className="top-bar">
-        <div className="topbar-subby">Ridestore</div>
+        <div className="topbar-subby" dangerouslySetInnerHTML={{ __html: message }} />
         <div className="menu-content">
           <ul>
             <li>1</li>
@@ -16,6 +17,12 @@ const NavigationBar = (props) => {
           </ul>
         </div>
       </div>
+    )
+  }
+
+  return (
+    <header>
+      <TopBar message={`<span class="text-bold">Free shipping. Free return.</span> All the time on all orders.`} />
       <div className="navbar-main">
         <div className="navbar-logo">Ridestore</div>
         <div className="navbar-categories">
@@ -30,7 +37,7 @@ const NavigationBar = (props) => {
         <div className="navbar-right">
           <div className="navbar-search">Search for products</div>
           <div className="navbar-favourite">Heart</div>
-          <div className="navbar-cart">{getCartTotalQuantity()}</div>
+          <div className="navbar-cart">{cart.getCartQuantity()}</div>
         </div>
       </div>
     </header>

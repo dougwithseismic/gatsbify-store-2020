@@ -19,7 +19,9 @@ Detailed Product Pages
 Landing Pages
 
 Create-a-Cart API - Allows users to generate their own carts from outside the store for others to use, adding discounts and affiliate attribution along the way. Ahoy 🚀
+
 Shared carts - Get the buy-in from friends and family with suggestions and shared cart shortlinks
+
 Integrations with basically every ecomm tool imaginable, out-of-the-box - Yotpo, Shogun, Shopify Apps, Analytics, GTM, Ads, Feed Gen etc
 Scheduled product launches and private product gateways.
 

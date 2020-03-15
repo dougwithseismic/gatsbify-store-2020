@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react'
+import React, { createContext } from 'react'
 import useCart from '../hooks/useCart'
 
 // Holds all the functions and logic required to let the cart feature work.
@@ -6,23 +6,7 @@ import useCart from '../hooks/useCart'
 
 Features:
 
-[☑] - addToCart(uid) // Adds item to cart, based on UID. 
-[☑] - removeFromCart(uid, 1?) // item to cart, based on UID. Takes an optional second argument that removes all quantity from cart.
-[☑] - amendCart(uid, method) // Adds or removes items from cart, based on UID and method, 'add', 'remove' Because why not?
-[☑] - resetCart() // Clears cart
-[☑] - getProductFromSlug(String!) // getProductFromSlug('comfy-chair-1') 
-[☑] - getProductFromId(input) // getProductFromId(uid) 
-[☑] - getCartTotalQuantity() // Returns sum of cart quanitities
-[☑] - getCartTotalPrice() // Returns sum of cart price
-
-
-Considerations - 
-
-[ ] - Undo history for massive user QOL upgrade?
-[☑] - Local storage for cross-session cart saves
-
-TODO:
-Enhanced Ecommerce events
+  useCart - Custom Hook for managing Cart state inc. undo history and Side Drawer
 
 */
 
@@ -38,13 +22,12 @@ const defaultState = {
 const CartContext = createContext(defaultState)
 
 const CartProvider = (props) => {
-  const cart = useCart([])
   const { children } = props
 
   return (
     <CartContext.Provider
       value={{
-        cart
+        cart: useCart()
       }}
     >
       {children}

@@ -6,13 +6,20 @@ import Image from '../components/image'
 import SEO from '../components/seo'
 import CartContext from '../context/cartContext'
 
+import Drawer from '../components/Common/Drawer'
+
 const IndexPage = () => {
   const { cart } = useContext(CartContext)
 
   return (
     <Layout>
       <SEO title="Home" />
-      <h1>Hi people</h1>
+
+      <Drawer isOpen={cart.isDrawerOpen} openedClass="cart-drawer-open" closedClass="cart-drawer-closed">
+        <p>Here we can render everything that's inside that drawer. I think</p>
+        <p>Cart Quantity: {cart.getCartQuantity()}</p>
+      </Drawer>
+
       <button onClick={() => cart.addToCart(1001)}>Add 1001 Cart</button>
       <button onClick={() => cart.addToCart(1234)}>Add 1234 Cart</button>
       <button onClick={() => cart.removeFromCart(1001)}>Remove 1001 Cart</button>
@@ -23,7 +30,7 @@ const IndexPage = () => {
 
       {cart.getDetailedCart().map((product) => {
         return (
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'row', margin: '1rem' }}>
             <div>{product.name}</div>
             <div>£{product.price}</div>
             <button onClick={() => cart.removeFromCart(product.uid)}>-</button>

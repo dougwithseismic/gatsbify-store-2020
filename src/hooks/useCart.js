@@ -1,5 +1,7 @@
-import {  useReducer, useCallback, useEffect } from 'react'
+import { useReducer, useCallback, useEffect, useState } from 'react'
 import { inventory } from '../providers/inventory'
+
+import { v4 as uuidv4 } from 'uuid'
 
 // The useCart hook has all cart functionality plus a cart history for undo/redo.
 
@@ -15,10 +17,16 @@ import { inventory } from '../providers/inventory'
 [☑] - getCartTotalPrice() // Returns sum of cart price 
 [☑] - getDetailedCart() // Returns cart with all data pulled from inventory. 
 
+[☑] - toggleDrawer() - Opens / Closes Cart Side Drawer
+[☑] - setIsDrawerOpen(true / false)
+
 
 Considerations - 
 [☑] - Undo history
 [☑] - Local storage for cross-session cart saves
+[☑] - Add a unique ID to each cart for more advanced usage later (Storing cart remotely etc.)
+[ ] - Snackbar notification event lifecycles for when a cart action occurs.
+[ ] - Handle Product Bundles. Each object in cart can have a type - singleProduct or Bundle. Bundles have a collection of child single products
 
 */
 
@@ -54,6 +62,7 @@ const reducer = (state, action) => {
       const setNewPast = pastCart ? pastCart : [ ...past, cart ]
 
       return {
+        ...state,
         past: setNewPast,
         cart: newCart,
         future: []
@@ -82,6 +91,7 @@ const reducer = (state, action) => {
       const newFuture = future.slice(1)
 
       return {
+        ...state,
         past: [ ...past, cart ],
         cart: [ ...next ],
         future: newFuture
@@ -91,6 +101,7 @@ const reducer = (state, action) => {
       // If we already have a blank cart in our last past slot, we dont need any others
       if (past.length > 0 && past[past.length - 1].length === 0) {
         return {
+          ...state,
           past: [ ...past ],
           cart: [],
           future: []
@@ -98,6 +109,7 @@ const reducer = (state, action) => {
       }
 
       return {
+        ...state,
         past: [ ...past, cart ],
         cart: [],
         future: []
@@ -140,31 +152,35 @@ const reducer = (state, action) => {
 
 const useCart = () => {
   const [ state, dispatch ] = useReducer(reducer, { ...defaultState })
+  const [ localStorage, setLocalStorage ] = useState()
+  const [ isDrawerOpen, setIsDrawerOpen ] = useState(false)
   const STORAGE_KEY = '_GATSBIFY_STORE'
 
   useEffect(() => {
     // If we're a returning visitor, we'll want to grab our previous cart, saved in localStorage. Ift not, let's create a localStorage cart.
-    // TODO: Store baskets in db and use a token instead of an object
     if (typeof window !== 'undefined') {
       const cartStorage = window.localStorage.getItem(STORAGE_KEY) // Checks localStorage for our cart.
 
       // if no existing Cart is stored then create and store the default, empty cart.
       if (!cartStorage) {
         console.log('No localStorage - Creating')
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart: state.cart }))
+        const local = { id: uuidv4(), cart: state.cart }
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(local))
+        setLocalStorage(local)
       } else {
         let localCart = JSON.parse(window.localStorage.getItem(STORAGE_KEY)).cart
         console.log('Found Local Storage:', localCart)
+        setLocalStorage(JSON.parse(window.localStorage.getItem(STORAGE_KEY)))
 
         dispatch({ type: 'SET_CART', newCart: localCart, pastCart: [] })
       }
     }
   }, [])
 
-  // useEffect #2 - Every time the cart gets updated, we might as well update the localStorage and our cart History, too.
+  // useEffect #2 - Every time the cart gets updated, we should update the localStorage, too.
   useEffect(
     () => {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ cart: state.cart }))
+      localStorage && window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...localStorage, cart: state.cart }))
     },
     [ state ]
   )
@@ -234,6 +250,10 @@ const useCart = () => {
     [ dispatch ]
   )
 
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen)
+  }
+
   const getProductFromSlug = (slug) => {
     return inventory.find((p) => p.slug === slug)
   }
@@ -281,7 +301,10 @@ const useCart = () => {
     getProductFromSlug,
     getProductFromId,
     getDetailedCart,
-    getCartTotalPrice
+    getCartTotalPrice,
+    toggleDrawer,
+    isDrawerOpen,
+    setIsDrawerOpen
   }
 }
 
