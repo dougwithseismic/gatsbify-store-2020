@@ -1,4 +1,4 @@
-import { useState, useReducer, useCallback, useEffect } from 'react'
+import {  useReducer, useCallback, useEffect } from 'react'
 import { inventory } from '../providers/inventory'
 
 // The useCart hook has all cart functionality plus a cart history for undo/redo.
@@ -22,7 +22,7 @@ Considerations -
 
 */
 
-const historyLength = 10 // How much history we'd like to store.
+const historyLength = 0 // How much history we'd like to store. Set to 0 for unlimited storage.
 
 const defaultState = {
   past: [],
@@ -37,9 +37,8 @@ const reducer = (state, action) => {
   // This was HELL to figure out! I needed to clone a copy of the cart without reference or the history would get updated instead of satay stuck in time
   const copiedCart = cart.map((object) => ({ ...object }))
 
+  // findProductInCart(uid) - Returns a product object by uid
   const findProductInCart = (uid) => {
-    // FUNCTION: findProductInCart(uid)
-    // Returns a product object by uid
     return cart.find((product) => product.uid === uid)
   }
 
@@ -51,7 +50,8 @@ const reducer = (state, action) => {
         return state
       }
 
-      const setNewPast = pastCart ? pastCart : [ ...past, cart ] // Hacky way of making sure we have a totally clear past, instead of  an initial empty array
+      // Hacky way of making sure we have a totally clear past, instead of  an initial empty array when the cart loads from localStorage
+      const setNewPast = pastCart ? pastCart : [ ...past, cart ]
 
       return {
         past: setNewPast,
@@ -120,7 +120,7 @@ const reducer = (state, action) => {
 
     case 'REMOVE_FROM_CART':
       foundProduct = findProductInCart(uid)
-      const { nuke } = action.type // A second argument that when present, removes all quantities from that product
+      const { nuke } = action // A second argument that when present, removes all quantities from that product
 
       if (foundProduct) {
         if (foundProduct.quantity === 1 || nuke) {
@@ -169,8 +169,8 @@ const useCart = () => {
     [ state ]
   )
 
-  // Let's keep our history managable by only allowing X actions to be stored!
-  if (state.past.length > historyLength) {
+  // Let's keep our history managable by only allowing X actions to be stored. If historyLength is set to zero, history length is unmanaged.
+  if (state.past.length > (historyLength !== 0 ? historyLength : 9999)) {
     state.past.shift()
   }
 

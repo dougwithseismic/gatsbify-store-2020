@@ -21,6 +21,19 @@ const IndexPage = () => {
       <button onClick={() => cart.redoCart()}>Redo Cart</button>
       <button onClick={() => cart.clearCart()}>Clear Cart</button>
 
+      {cart.getDetailedCart().map((product) => {
+        return (
+          <div>
+            <div>{product.name}</div>
+            <div>£{product.price}</div>
+            <button onClick={() => cart.removeFromCart(product.uid)}>-</button>
+            <div>{product.quantity}</div>
+            <button onClick={() => cart.addToCart(product.uid)}>+</button>
+            <button onClick={() => cart.removeFromCart(product.uid, true)}>x</button>
+          </div>
+        )
+      })}
+
       <p>Undo History: {JSON.stringify(cart.past)}</p>
       <p>Current Cart : {JSON.stringify(cart.getCart())}</p>
       <p>Future Cart : {JSON.stringify(cart.future)}</p>
