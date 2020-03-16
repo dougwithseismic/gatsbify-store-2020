@@ -46,6 +46,9 @@ Headless Components by default: HOC components that pass down product informatio
 Integrates with: 
 
 * https://subscribers.com/
+* Google Analytics
+* Google Tag Manager
+ 
 
 ```javaScript
 import CartContext from '../context/CartContext'

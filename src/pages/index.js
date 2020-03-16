@@ -28,9 +28,9 @@ const IndexPage = () => {
       <button onClick={() => cart.redoCart()}>Redo Cart</button>
       <button onClick={() => cart.clearCart()}>Clear Cart</button>
 
-      {cart.getDetailedCart().map((product) => {
+      {cart.getDetailedCart().map((product, i) => {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', margin: '1rem' }}>
+          <div key={i} style={{ display: 'flex', flexDirection: 'row', margin: '1rem' }}>
             <div>{product.name}</div>
             <div>£{product.price}</div>
             <button onClick={() => cart.removeFromCart(product.uid)}>-</button>

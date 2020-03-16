@@ -1,5 +1,6 @@
 import { useReducer, useCallback, useEffect, useState } from 'react'
 import { inventory } from '../providers/inventory'
+import useEnhancedEcommerce from './useEnhancedEcommerce'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -11,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid'
 [☑] - amendCart(uid, method) // Adds or removes items from cart, based on UID and method, 'add', 'remove' Because why not?
 [☑] - clearCart() // Clears cart of all products for a fresh start
 
-[☑] - getProductFromSlug(String!) // getProductFromSlug('comfy-chair-1') 
+[☑] - getProductFromSlug(String!) // getProductFromSlug('comfy-chair-1') // THESE SHOULDNT SIT HERE
 [☑] - getProductFromId(input) // getProductFromId(uid) 
 [☑] - getCartQuantity() // Returns sum of cart quanitities
 [☑] - getCartTotalPrice() // Returns sum of cart price 
@@ -26,7 +27,9 @@ Considerations -
 [☑] - Local storage for cross-session cart saves
 [☑] - Add a unique ID to each cart for more advanced usage later (Storing cart remotely etc.)
 [ ] - Snackbar notification event lifecycles for when a cart action occurs.
+[ ] - Enhanced Ecommerce
 [ ] - Handle Product Bundles. Each object in cart can have a type - singleProduct or Bundle. Bundles have a collection of child single products
+
 
 */
 
@@ -40,9 +43,9 @@ const defaultState = {
 
 const reducer = (state, action) => {
   const { cart, past, future } = state
-  const { uid } = action
+  const { uid, ee } = action
 
-  // This was HELL to figure out! I needed to clone a copy of the cart without reference or the history would get updated instead of satay stuck in time
+  // Needed to clone a copy of the cart without reference or the history would get updated instead of satay stuck in time
   const copiedCart = cart.map((object) => ({ ...object }))
 
   // findProductInCart(uid) - Returns a product object by uid
@@ -98,6 +101,7 @@ const reducer = (state, action) => {
       }
 
     case 'CLEAR_CART':
+      cart.length > 0 && ee.clearCart(copiedCart) // Send the EE Clear Cart event if we have anything in the cart to be cleared
       // If we already have a blank cart in our last past slot, we dont need any others
       if (past.length > 0 && past[past.length - 1].length === 0) {
         return {
@@ -116,8 +120,8 @@ const reducer = (state, action) => {
       }
 
     case 'ADD_TO_CART':
+      ee.addToCart(uid) // Enhanced Ecommerce
       let foundProduct = findProductInCart(uid)
-
       if (foundProduct) {
         foundProduct.quantity += 1
         return {
@@ -133,6 +137,8 @@ const reducer = (state, action) => {
     case 'REMOVE_FROM_CART':
       foundProduct = findProductInCart(uid)
       const { nuke } = action // A second argument that when present, removes all quantities from that product
+      ee.removeFromCart(uid) // Enhanced Ecommerce
+
 
       if (foundProduct) {
         if (foundProduct.quantity === 1 || nuke) {
@@ -151,6 +157,7 @@ const reducer = (state, action) => {
 // useCart Hook
 
 const useCart = () => {
+  const ee = useEnhancedEcommerce()
   const [ state, dispatch ] = useReducer(reducer, { ...defaultState })
   const [ localStorage, setLocalStorage ] = useState()
   const [ isDrawerOpen, setIsDrawerOpen ] = useState(false)
@@ -182,7 +189,7 @@ const useCart = () => {
     () => {
       localStorage && window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...localStorage, cart: state.cart }))
     },
-    [ state ]
+    [ state, localStorage ]
   )
 
   // Let's keep our history managable by only allowing X actions to be stored. If historyLength is set to zero, history length is unmanaged.
@@ -193,16 +200,24 @@ const useCart = () => {
   const canUndo = state.past.length !== 0
   const canRedo = state.future.length !== 0
 
+  const getCart = () => {
+    return state.cart
+  }
+
+  const getProductFromSlug = (slug) => {
+    return inventory.find((p) => p.slug === slug)
+  }
+
+  const getProductFromId = (uid) => {
+    return inventory.find((product) => product.uid === uid)
+  }
+
   const clearHistory = useCallback(
     () => {
       dispatch({ type: 'CLEAR_HISTORY' })
     },
     [ dispatch ]
   )
-
-  const getCart = () => {
-    return state.cart
-  }
 
   // DONT USE SETCART TO CLEAR A CART. USE clearCart() instead
   const setCart = useCallback(
@@ -232,33 +247,27 @@ const useCart = () => {
 
   const clearCart = useCallback(
     () => {
-      dispatch({ type: 'CLEAR_CART' })
+      dispatch({ type: 'CLEAR_CART', ee })
     },
-    [ canRedo, dispatch ]
+    [ dispatch ]
   )
+
   const addToCart = useCallback(
     (uid) => {
-      dispatch({ type: 'ADD_TO_CART', uid })
+      dispatch({ type: 'ADD_TO_CART', uid, ee })
     },
     [ dispatch ]
   )
 
   const removeFromCart = useCallback(
     (uid, nuke) => {
-      dispatch({ type: 'REMOVE_FROM_CART', uid, nuke })
+      dispatch({ type: 'REMOVE_FROM_CART', uid, nuke, ee })
     },
     [ dispatch ]
   )
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen)
-  }
-
-  const getProductFromSlug = (slug) => {
-    return inventory.find((p) => p.slug === slug)
-  }
-  const getProductFromId = (uid) => {
-    return inventory.find((product) => product.uid === uid)
   }
 
   const getDetailedCart = () => {
