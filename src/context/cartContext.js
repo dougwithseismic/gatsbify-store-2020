@@ -1,12 +1,15 @@
 import React, { createContext } from 'react'
-import useCart from '../hooks/useCart'
+import useCart from '../hooks/useCart' 
+import inventory from '../providers/inventory'
 
 // Holds all the functions and logic required to let the cart feature work.
 /* 
 
 Features:
 
-  useCart - Custom Hook for managing Cart state inc. undo history and Side Drawer
+  useCart - Custom Hook for managing Cart state inc. undo history.
+  cartContext.cart // Returns all useCart features
+  cartContext.inventory // Returns all inventory for now.
 
 */
 
@@ -27,7 +30,8 @@ const CartProvider = (props) => {
   return (
     <CartContext.Provider
       value={{
-        cart: useCart()
+        cart: useCart(),
+        inventory
       }}
     >
       {children}

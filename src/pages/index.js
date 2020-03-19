@@ -5,11 +5,17 @@ import Layout from '../components/layout'
 import Image from '../components/image'
 import SEO from '../components/seo'
 import CartContext from '../context/cartContext'
+import ProductCard from '../components/ProductCard'
+import { ProductCardContext } from '../components/ProductCard'
 
 import Drawer from '../components/Common/Drawer'
 
 const IndexPage = () => {
   const { cart } = useContext(CartContext)
+
+  const InnerDetail = () => {
+    return <ProductCardContext.Consumer>{({product}) => <p>{product.name}</p>}</ProductCardContext.Consumer>
+  }
 
   return (
     <Layout>
@@ -27,6 +33,10 @@ const IndexPage = () => {
       <button onClick={() => cart.undoCart()}>Undo Cart</button>
       <button onClick={() => cart.redoCart()}>Redo Cart</button>
       <button onClick={() => cart.clearCart()}>Clear Cart</button>
+
+      <ProductCard uid="1001">
+        <InnerDetail />
+      </ProductCard>
 
       {cart.getDetailedCart().map((product, i) => {
         return (

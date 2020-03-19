@@ -18,7 +18,7 @@ import { v4 as uuidv4 } from 'uuid'
 [☑] - getCartTotalPrice() // Returns sum of cart price 
 [☑] - getDetailedCart() // Returns cart with all data pulled from inventory. 
 
-[☑] - toggleDrawer() - Opens / Closes Cart Side Drawer
+[☑] - toggleDrawer() - Opens / Closes Cart Side Drawer TODO: SHOULDNT REALLY BE IN HERE!
 [☑] - setIsDrawerOpen(true / false)
 
 
@@ -137,10 +137,9 @@ const reducer = (state, action) => {
     case 'REMOVE_FROM_CART':
       foundProduct = findProductInCart(uid)
       const { nuke } = action // A second argument that when present, removes all quantities from that product
-      ee.removeFromCart(uid) // Enhanced Ecommerce
-
-
       if (foundProduct) {
+        ee.removeFromCart(uid) // Enhanced Ecommerce
+
         if (foundProduct.quantity === 1 || nuke) {
           const updatedCart = cart.filter((product) => product.uid !== foundProduct.uid)
           console.log('copiedCart :', copiedCart)

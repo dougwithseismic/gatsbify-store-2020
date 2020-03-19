@@ -1,7 +1,11 @@
 import { inventory } from '../providers/inventory'
 import { useReducer, useCallback } from 'react'
 
-/** useEnhancedEcommerce Hook - Sends datalayer events for GTM */
+/** useEnhancedEcommerce Hook - Sends datalayer events for GTM 
+ * addToCart(uid)
+ * removeFromCart(uid)
+ * clearCart()
+*/
 
 const CURRENCY = 'GBP'
 
@@ -11,6 +15,7 @@ const reducer = (state, action) => {
     case 'ADD_REMOVE_CART': {
       // Pushes the relevant event on addToCart and removeFromCart events.
       const { method } = action
+      const eventName = method === 'add' ? 'Enhanced Ecommerce: addToCart' : 'Enhanced Ecommerce: removeFromCart'
       const { name, price, brand, category, variant, dimensions, quantity } = inventory.find(
         (product) => product.uid === uid
       )
@@ -41,7 +46,7 @@ const reducer = (state, action) => {
       ecommerce[method] = { products: [ productObject ] }
 
       window.dataLayer.push({
-        event: method,
+        event: eventName,
         ecommerce
       })
       return state
@@ -66,7 +71,7 @@ const reducer = (state, action) => {
       })
 
       const payload = {
-        event: 'removeFromCart',
+        event: 'EE: Remove From Cart',
         ecommerce: {
           currencyCode: 'USD',
           remove: {
