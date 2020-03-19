@@ -1,5 +1,5 @@
-import React, { createContext } from 'react'
-
+import React, { createContext, useContext } from 'react'
+import CartContext from '../context/cartContext'
 const ProductCardContext = createContext()
 
 /*
@@ -15,14 +15,25 @@ const ProductCardContext = createContext()
  */
 
 const ProductCard = ({ uid, children }) => {
-  const getProductDetails = (uid) => {
-    return { uid: 1234, name: 'Comfy chair', description: 'Wow what a chair!', price: 125 }
+  const { cart } = useContext(CartContext)
+  /*
+  {
+    uid,
+    name,
+    description,
+    price,
+    quantity // From cart!
   }
+  */
+
+  // TODO: Clean up this horrible mess. (Refactor)
+  const details = cart.cart.find((p) => p.uid === uid) ? cart.cart.find((p) => p.uid === uid) : { quantity: 0 }
+  const p = { ...cart.getProductFromId(uid), quantity: details.quantity }
 
   return (
     <ProductCardContext.Provider
       value={{
-        product: getProductDetails(uid)
+        product: p
       }}
     >
       {children}

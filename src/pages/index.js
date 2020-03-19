@@ -13,8 +13,19 @@ import Drawer from '../components/Common/Drawer'
 const IndexPage = () => {
   const { cart } = useContext(CartContext)
 
-  const InnerDetail = () => {
-    return <ProductCardContext.Consumer>{({product}) => <p>{product.name}</p>}</ProductCardContext.Consumer>
+  // An example of how to a child can consume the context held within <ProductCard/>
+  const InnerDetail = ({ cart, i }) => {
+    const { product } = useContext(ProductCardContext)
+    return (
+      <div key={i} style={{ display: 'flex', flexDirection: 'row', margin: '1rem' }}>
+        <div>{product.name}</div>
+        <div>£{product.price}</div>
+        <button onClick={() => cart.removeFromCart(product.uid)}>-</button>
+        <div>{product.quantity}</div>
+        <button onClick={() => cart.addToCart(product.uid)}>+</button>
+        <button onClick={() => cart.removeFromCart(product.uid, true)}>x</button>
+      </div>
+    )
   }
 
   return (
@@ -34,22 +45,12 @@ const IndexPage = () => {
       <button onClick={() => cart.redoCart()}>Redo Cart</button>
       <button onClick={() => cart.clearCart()}>Clear Cart</button>
 
-      <ProductCard uid="1001">
-        <InnerDetail />
-      </ProductCard>
-
-      {cart.getDetailedCart().map((product, i) => {
-        return (
-          <div key={i} style={{ display: 'flex', flexDirection: 'row', margin: '1rem' }}>
-            <div>{product.name}</div>
-            <div>£{product.price}</div>
-            <button onClick={() => cart.removeFromCart(product.uid)}>-</button>
-            <div>{product.quantity}</div>
-            <button onClick={() => cart.addToCart(product.uid)}>+</button>
-            <button onClick={() => cart.removeFromCart(product.uid, true)}>x</button>
-          </div>
-        )
-      })}
+      {cart.cart.map((product, i) => (
+        <ProductCard uid={product.uid} key={i}>
+          {/* // These child components can consume the rich product detail from ProductCard. Nice, HOC - Nice. */}
+          <InnerDetail cart={cart} />
+        </ProductCard>
+      ))}
 
       <p>Undo History: {JSON.stringify(cart.past)}</p>
       <p>Current Cart : {JSON.stringify(cart.getCart())}</p>
