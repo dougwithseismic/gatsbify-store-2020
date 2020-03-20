@@ -27,9 +27,9 @@ Considerations -
 [☑] - Local storage for cross-session cart saves
 [☑] - Add a unique ID to each cart for more advanced usage later (Storing cart remotely etc.)
 [ ] - Snackbar notification event lifecycles for when a cart action occurs.
-[ ] - Enhanced Ecommerce
+[-] - Enhanced Ecommerce Google Analytics
 [ ] - Handle Product Bundles. Each object in cart can have a type - singleProduct or Bundle. Bundles have a collection of child single products
-
+[ ] - Handle 'Viewed Products' - Create a list of users' previously viewed products
 
 */
 
@@ -120,7 +120,7 @@ const reducer = (state, action) => {
       }
 
     case 'ADD_TO_CART':
-      ee.addToCart(uid) // Enhanced Ecommerce
+      ee.addToCart(uid) // Enhanced Ecommerce Event (for Google Analytics / useEnhancedEcommerce hook)
       let foundProduct = findProductInCart(uid)
       if (foundProduct) {
         foundProduct.quantity += 1
@@ -159,9 +159,10 @@ const useCart = () => {
   const ee = useEnhancedEcommerce()
   const [ state, dispatch ] = useReducer(reducer, { ...defaultState })
   const [ localStorage, setLocalStorage ] = useState()
-  const [ isDrawerOpen, setIsDrawerOpen ] = useState(false)
+  const [ isDrawerOpen, setIsDrawerOpen ] = useState(false) // TODO: Move this out of useCart and into somewhere more scalable.
   const STORAGE_KEY = '_GATSBIFY_STORE'
 
+  // useEffect #1 - On load, lets grab any localStorage cart from a potential previous session a returning user had.
   useEffect(() => {
     // If we're a returning visitor, we'll want to grab our previous cart, saved in localStorage. Ift not, let's create a localStorage cart.
     if (typeof window !== 'undefined') {

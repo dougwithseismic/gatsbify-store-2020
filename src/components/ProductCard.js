@@ -26,9 +26,11 @@ const ProductCard = ({ uid, children }) => {
   }
   */
 
-  // TODO: Clean up this horrible mess. (Refactor)
+  // TODO: Clean up this horrible mess and create a helper perhaps? (Refactor)
   const details = cart.cart.find((p) => p.uid === uid) ? cart.cart.find((p) => p.uid === uid) : { quantity: 0 }
-  const p = { ...cart.getProductFromId(uid), quantity: details.quantity }
+  const p = { ...cart.getProductFromId(uid), ...details }
+
+  console.log('p :', p);
 
   return (
     <ProductCardContext.Provider
