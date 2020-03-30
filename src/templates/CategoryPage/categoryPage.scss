@@ -15,9 +15,10 @@
   }
 
   .product-catalog {
-    display: flex;
-    flex-direction: row;
-
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
     justify-content: space-between;
     flex-wrap: wrap;
     .product-card {
@@ -27,15 +28,18 @@
         width: 100%;
       }
       .product-card-detail {
-        margin:  0 0 1em 0;
+        margin: 0 0 1em 0;
+        text-align: center;
+
       }
       .product-title {
-        font-weight: bold;
+        font-size: .875em;
+        margin: 1em;
       }
-    }
-    &:after {
-      content: "";
-      flex: auto;
+      .product-price {
+            font-weight: bold;
+            font-size: .8em; 
+      }
     }
   }
 } /* Define mobile styles - Mobile First */
