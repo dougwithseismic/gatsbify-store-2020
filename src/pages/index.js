@@ -87,7 +87,7 @@ const IndexPage = () => {
         <div className="category-content">
         {categories.map((cat, i) => {
             return (
-              <Link className="category-block" to='/categorypage' key={i}>
+              <Link className="category-block" to='/category' key={i}>
                 <img className="category-image" src={cat.img} alt={`The Ridestore ${cat.name} Category`} />
                 <div className="category-name">{cat.name}</div>
               </Link>
