@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'gatsby'
 import Layout from '../../components/layout'
 import SEO from '../../components/seo'
 
@@ -42,13 +43,13 @@ const CategoryPage = (props) => {
             </div>
           </div>
           {/* Product Card */}
-          <div className="product-card">
+          <Link className="product-card" to="/productpage">
             <img src={product2} alt="" className="product-card-image" />
             <div className="product-card-detail">
               <div className="product-title">Dope Drizzard Outdoor Jacket Black</div>
               <div className="product-price">£99</div>
             </div>
-          </div>
+          </Link>
           {/* Product Card */}
           <div className="product-card">
             <img src={product3} alt="" className="product-card-image" />
@@ -74,13 +75,13 @@ const CategoryPage = (props) => {
             </div>
           </div>
           {/* Product Card */}
-          <deiv className="product-card">
+          <Link className="product-card" to="/productpage">
             <img src={product1} alt="" className="product-card-image" />
             <div className="product-card-detail">
               <div className="product-title">Dope Drizzard Outdoor Jacket Black</div>
               <div className="product-price">£99</div>
             </div>
-          </div>
+          </Link>
         </section>
       </div>
     </Layout>
