@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+  font-family: 'Overpass', sans-serif;
+  letter-spacing: 0.2px;
+}
+
+section {
+  margin: 0 0 2em
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+@media only screen {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+} /* Define mobile styles - Mobile First */
+/* Medium screens - TABLET */
+@media only screen and (min-width: 40.063em) {
+} /* min-width 641px, medium screens */
+/* Large screens - DESKTOP */
+@media only screen and (min-width: 64.063em) {
+  .container {
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .row {
+    flex-direction: row;
+  }
+
+  .column {
+    flex-direction: column;
+  }
+
+  section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+} /* min-width 1025px, large screens */
+/* XLarge screens */
+@media only screen and (min-width: 90.063em) {
+} /* min-width 1441px, xlarge screens */
+/* XXLarge screens */
+@media only screen and (min-width: 120.063em) {
+} /* min-width 1921px, xlarge screens */

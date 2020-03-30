@@ -3,5 +3,6 @@
 
 import React from 'react'
 import { CartProvider } from './src/context/cartContext'
+import './src/global.css'
 
 export const wrapRootElement = ({ element }) => <CartProvider>{element}</CartProvider>
