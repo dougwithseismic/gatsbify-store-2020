@@ -3,7 +3,8 @@ import ProductPage from '../templates/ProductPage'
 import Layout from '../components/layout'
 import SEO from '../components/seo'
 
-export const productpage = () => {
+// Careful of the Product vs Products spelling! 
+const ProductsPage = () => {
   return (
     <Layout>
       <SEO />
@@ -11,3 +12,6 @@ export const productpage = () => {
     </Layout>
   )
 }
+
+export default ProductsPage
+
