@@ -67,14 +67,14 @@ const CategoryPage = (props) => {
           </div>
           {/* Product Card */}
           <div className="product-card">
-            <img src={product5} alt="" className="product-card-image" />
+            <img src={product5} alt="Dope Drizzard Outdoor Jacket Black" className="product-card-image" />
             <div className="product-card-detail">
               <div className="product-title">Dope Drizzard Outdoor Jacket Black</div>
               <div className="product-price">£99</div>
             </div>
           </div>
           {/* Product Card */}
-          <div className="product-card">
+          <deiv className="product-card">
             <img src={product1} alt="" className="product-card-image" />
             <div className="product-card-detail">
               <div className="product-title">Dope Drizzard Outdoor Jacket Black</div>
