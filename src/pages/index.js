@@ -65,25 +65,36 @@ const IndexPage = () => {
       <div className="container">
         <section className="hero-content">
           <div className="hero-left">
-            <h1>Dope 2020</h1>
+            <h1>Blazingly Fast Ecommerce Built For Performance Marketing Teams.</h1>
             <p>
-              Combining high-tech functionality with head-turning designs, the latest styles from Dope will get you
-              ready for any and every adventure this season
+              Powered by <span className="text-bold">Shopify and Gatsby</span>, and built by award-winning Performance
+              Marketers to one-up the current state of ecommerce stagnancy with innovative,{' '}
+              <span className="text-bold">revenue-driving features</span> like Affiliate Create-a-Carts, shared baskets,
+              pay-by-social and automated acquisition in <span className="text-bold">fifteen languages</span>.
+            </p>
+            <p>
+              Something something beautiful sites to <span className="text-bold">make your competitors envious</span> and your
+              customers rave about your brand.
             </p>
           </div>
           <div className="hero-right">
-            <div className="cta-btn">View Collection</div>
+            {/* <div className="cta-btn">View Collection</div> */}
           </div>
         </section>
         <section className="categories">
-          {categories.map((cat, i) => {
+        <h3 className="showcase-heading">Categories</h3>
+
+        <div className="category-content">
+        {categories.map((cat, i) => {
             return (
-              <div className="category-block" key={i}>
+              <Link className="category-block" to='/categoryPage' key={i}>
                 <img className="category-image" src={cat.img} alt={`The Ridestore ${cat.name} Category`} />
                 <div className="category-name">{cat.name}</div>
-              </div>
+              </Link>
             )
           })}
+        </div>
+
         </section>
         <section className="brands">
           <div className="brand-logos">
