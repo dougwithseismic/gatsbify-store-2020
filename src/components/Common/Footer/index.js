@@ -52,7 +52,7 @@ const Footer = (props) => {
           <span className="social-icon">TikTok</span>
         </div>
       </div>
-      <span className="copyright">© 2020 Ridestore AB. All rights reserved</span>
+      <span className="copyright">© 2020 Gatsbify. All rights reserved</span>
     </section>
   )
 }

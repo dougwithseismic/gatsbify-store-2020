@@ -17,11 +17,13 @@
     position: relative;
     justify-content: space-between;
     align-items: center;
-    cursor: grab;
 
     .product-images {
+
       display: flex;
       overflow: hidden;
+      cursor: grab;
+
       .product-img {
         flex: 1 0 calc(20% - 1em);
         margin: 0 1em 0 0;

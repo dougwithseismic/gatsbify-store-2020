@@ -29,7 +29,7 @@ const NavigationBar = () => {
       <TopBar message={`<span class="text-bold">Free shipping. Free return.</span> All the time on all orders.`} />
       <div className="navbar-main container row">
         <Link to="/" className="navbar-logo">
-          <img src={logo} alt="The Ridestore Logo" />
+          {/* <img src={logo} alt="The Gatsbify Logo" /> */}
         </Link>
         <div className="navbar-categories">
           <ul>
