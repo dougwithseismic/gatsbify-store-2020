@@ -9,6 +9,7 @@ import ProductCard from '../components/ProductCard'
 import { ProductCardContext } from '../components/ProductCard'
 
 import Drawer from '../components/Common/Drawer'
+import Basket from '../components/Basket'
 
 const IndexPage = () => {
   const { cart } = useContext(CartContext)
@@ -33,8 +34,7 @@ const IndexPage = () => {
       <SEO title="Home" />
       <div className="container">
         <Drawer isOpen={cart.isDrawerOpen} openedClass="cart-drawer-open" closedClass="cart-drawer-closed">
-          <p>Here we can render everything that's inside that drawer. I think</p>
-          <p>Cart Quantity: {cart.getCartQuantity()}</p>
+          <Basket />
         </Drawer>
 
         <button onClick={() => cart.addToCart(1001)}>Add 1001 Cart</button>
