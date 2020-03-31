@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
+
+import CartContext from '../../context/cartContext'
 
 import product1 from '../../images/products/E7724_20.jpg'
 import product2 from '../../images/products/E7724_21.jpg'
@@ -11,6 +13,8 @@ import product6 from '../../images/products/E7724_25.jpg'
 import './productpage.scss'
 
 const ProductPage = (props) => {
+  const { cart } = useContext(CartContext)
+
   return (
     <section className="product-content">
       <div className="container">
@@ -58,7 +62,7 @@ const ProductPage = (props) => {
         {/* Product Box - Sits on top of carousel */}
         <div className="product-action-box">
           <div className="product-action-top">
-            <h3 className="product-action-title">Drizzard</h3>
+            <h3 className="product-action-title">Drizzard Outdoor Jacket</h3>
             <span className="product-action-brand">Dope</span>
           </div>
           <div className="product-action-variants">
@@ -80,51 +84,55 @@ const ProductPage = (props) => {
             <span>Find Your Size</span>
           </div>
           <div className="action-cta">
-            <div className="buy-btn">£99</div>
+            <div className="buy-btn" onClick={() => cart.addToCart(1234)}>£99</div>
             <div className="fav-button">L</div>
           </div>
-          <div className="action-benefits">
-            <div className="action-benefit">Free shopping and free returns</div>
-            <div className="action-benefit">90 day right of return</div>
-            <div className="action-benefit">4-6 delivery time</div>
-          </div>
+          <ul className="action-benefits">
+            <li className="action-benefit">Free shopping and free returns</li>
+            <li className="action-benefit">90 day right of return</li>
+            <li className="action-benefit">Express Next Day Delivery</li>
+          </ul>
         </div>
       </section>
 
-      <section className="product-detail">
-        <div className="product-detail-main">
-          <div className="primary-detail">
-            <h1 className="product-detail-header">Drizzard</h1>
-            <span className="product-detail-desc">Outdoor Jacket / Dope</span>
-            <p>
-              Lightweight just got lighter! Meet the Drizzard jacket from Dope, a 2.5 membrane super-lightweight rain
-              jacket, in a true Dope style.
-            </p>
-            <p>
-              Actually, it’s so light that it feels like wearing nothing at all — more like a super stylish weather
-              protective forcefield than anything else.
-            </p>
-            <p>
-              We made the the Drizzard jacket with a stretchy fabric, so it’s sure to provide a super comfortable fit
-              and move with you no matter what you’re doing.
-            </p>
-            <p>
-              We know you need to keep your hands free, so we added in two large front pockets — one on the chest and
-              one on the stomach, both of which are equipped with waterproof zippers.
-            </p>
-            <p>
-              The jacket has an impressive 30K breathability rating, waterproof ventilation zippers, fully seams taped,
-              and a visored hood, keeping you well protected against the elements.
-            </p>
-            <p>Why choose between function and looks when you can have both?</p>
-          </div>
-          <div className="secondary-detail">
-            <div>Windproof</div>
-            <div>no fluorocarbons</div>
-            <div>Waterproofing</div>
+      <section className="product-detail-section">
+        <div className="container">
+          <div className="product-details">
+            <div className="product-detail-main">
+              <div className="primary-detail">
+                <h1 className="product-detail-header">Men's Dope Drizzard Outdoor Jacket - Black</h1>
+                <span className="product-detail-desc">Dope</span>
+                <p>
+                  Lightweight just got lighter! Meet the Drizzard jacket from Dope, a 2.5 membrane super-lightweight
+                  rain jacket, in a true Dope style.
+                </p>
+                <p>
+                  Actually, it’s so light that it feels like wearing nothing at all — more like a super stylish weather
+                  protective forcefield than anything else.
+                </p>
+                <p>
+                  We made the the Drizzard jacket with a stretchy fabric, so it’s sure to provide a super comfortable
+                  fit and move with you no matter what you’re doing.
+                </p>
+                <p>
+                  We know you need to keep your hands free, so we added in two large front pockets — one on the chest
+                  and one on the stomach, both of which are equipped with waterproof zippers.
+                </p>
+                <p>
+                  The jacket has an impressive 30K breathability rating, waterproof ventilation zippers, fully seams
+                  taped, and a visored hood, keeping you well protected against the elements.
+                </p>
+                <p>Why choose between function and looks when you can have both?</p>
+              </div>
+              <div className="secondary-detail">
+                <div>Windproof</div>
+                <div>no fluorocarbons</div>
+                <div>Waterproofing</div>
+              </div>
+            </div>
+            <div className="product-highlights">Cmon mate show some hightlight</div>
           </div>
         </div>
-        <div className="product-highlights" />
       </section>
     </section>
   )
