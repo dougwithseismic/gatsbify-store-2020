@@ -313,7 +313,7 @@ const useCart = () => {
     getCartTotalPrice,
     toggleDrawer,
     isDrawerOpen,
-    setIsDrawerOpen
+    setDrawer: (value) => setIsDrawerOpen(value)
   }
 }
 

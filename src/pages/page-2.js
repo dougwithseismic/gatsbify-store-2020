@@ -33,9 +33,6 @@ const IndexPage = () => {
     <Layout>
       <SEO title="Home" />
       <div className="container">
-        <Drawer isOpen={cart.isDrawerOpen} openedClass="cart-drawer-open" closedClass="cart-drawer-closed">
-          <Basket />
-        </Drawer>
 
         <button onClick={() => cart.addToCart(1001)}>Add 1001 Cart</button>
         <button onClick={() => cart.addToCart(1234)}>Add 1234 Cart</button>

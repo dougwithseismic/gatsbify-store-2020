@@ -59,13 +59,17 @@ const footerDetail = [
 ]
 
 const IndexPage = () => {
+  const { cart } = useContext(CartContext)
+  console.log('cart :', cart)
   return (
     <Layout>
       <SEO title="Home" />
       <div className="container">
         <section className="hero-content">
           <div className="hero-left">
-            <h1>Blazingly Fast Ecommerce Built For Performance Marketing Teams.</h1>
+            <h1>
+              Blazingly Fast Ecommerce Built For Performance Marketing Teams.
+            </h1>
             <p>
               Powered by <span className="text-bold">Shopify and Gatsby</span>, and built by award-winning Performance
               Marketers to one-up the current state of ecommerce stagnancy with innovative,{' '}
@@ -73,28 +77,27 @@ const IndexPage = () => {
               pay-by-social and automated acquisition in <span className="text-bold">fifteen languages</span>.
             </p>
             <p>
-              Something something beautiful sites to <span className="text-bold">make your competitors envious</span> and your
-              customers rave about your brand.
+              Something something beautiful sites to <span className="text-bold">
+                make your competitors envious
+              </span>{' '}
+              and your customers rave about your brand.
             </p>
           </div>
-          <div className="hero-right">
-            {/* <div className="cta-btn">View Collection</div> */}
-          </div>
+          <div className="hero-right">{/* <div className="cta-btn">View Collection</div> */}</div>
         </section>
         <section className="categories">
-        <h3 className="showcase-heading">Categories</h3>
+          <h3 className="showcase-heading">Categories</h3>
 
-        <div className="category-content">
-        {categories.map((cat, i) => {
-            return (
-              <Link className="category-block" to='/category' key={i}>
-                <img className="category-image" src={cat.img} alt={`The Ridestore ${cat.name} Category`} />
-                <div className="category-name">{cat.name}</div>
-              </Link>
-            )
-          })}
-        </div>
-
+          <div className="category-content">
+            {categories.map((cat, i) => {
+              return (
+                <Link className="category-block" to="/category" key={i}>
+                  <img className="category-image" src={cat.img} alt={`The Ridestore ${cat.name} Category`} />
+                  <div className="category-name">{cat.name}</div>
+                </Link>
+              )
+            })}
+          </div>
         </section>
         <section className="brands">
           <div className="brand-logos">

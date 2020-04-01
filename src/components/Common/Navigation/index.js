@@ -54,7 +54,7 @@ const NavigationBar = () => {
           </div>
 
           {/* <div className="navbar-favourite">Heart</div> */}
-          <div className="navbar-cart">
+          <div className="navbar-cart" onClick={() => cart.setDrawer(!cart.isDrawerOpen)}>
             <svg
               width="24"
               height="24"
