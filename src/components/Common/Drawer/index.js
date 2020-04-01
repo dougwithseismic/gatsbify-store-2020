@@ -12,8 +12,9 @@ import CartContext from './../../../context/cartContext'
  * 
  */
 
-const Drawer = ({ isOpen, openedClass, closedClass, children }) => {
+const Drawer = ({  openedClass, closedClass, children }) => {
   const { cart } = useContext(CartContext)
+  const isOpen = cart.isDrawerOpen
 
   // After .2 seconds, switch the black overlay to display none so we can click through it.
   // This gives us enough time to fade out properly.
@@ -36,7 +37,7 @@ const Drawer = ({ isOpen, openedClass, closedClass, children }) => {
   )
 
   return (
-    <div className={`cart-drawer-container`}>
+    <div className="cart-drawer-container">
       <div className={`cart-drawer ${isOpen ? openedClass : closedClass}`}>{children}</div>
       <div
         className={`cart-drawer-overlay ${isOpen ? 'overlay-open' : 'overlay-closed'}`}
@@ -46,10 +47,6 @@ const Drawer = ({ isOpen, openedClass, closedClass, children }) => {
   )
 }
 
-Drawer.defaultProps = {
-  isOpen: false,
-  openedClass: 'cart-drawer-open',
-  closedClass: 'cart-drawer-closed'
-}
+
 
 export default Drawer

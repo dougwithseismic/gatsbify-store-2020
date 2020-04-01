@@ -10,6 +10,8 @@ import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
 
 import Navigation from './Common/Navigation'
+import Drawer from './Common/Drawer'
+import Basket from './Basket'
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -24,6 +26,10 @@ const Layout = ({ children }) => {
 
   return (
     <Fragment>
+      <Drawer openedClass="cart-drawer-open" closedClass="cart-drawer-closed">
+        <Basket />
+      </Drawer>
+
       <Navigation />
       <div>
         <main>{children}</main>
