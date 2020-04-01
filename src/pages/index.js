@@ -1,6 +1,7 @@
 import React, { useContext, Fragment } from 'react'
 import { Link } from 'gatsby'
 
+
 import Layout from '../components/layout'
 import Image from '../components/image'
 import SEO from '../components/seo'
@@ -67,9 +68,7 @@ const IndexPage = () => {
       <div className="container">
         <section className="hero-content">
           <div className="hero-left">
-            <h1>
-              Blazingly Fast Ecommerce Built For Performance Marketing Teams.
-            </h1>
+            <h1>Blazingly Fast Ecommerce Built For Performance Marketing Teams.</h1>
             <p>
               Powered by <span className="text-bold">Shopify and Gatsby</span>, and built by award-winning Performance
               Marketers to one-up the current state of ecommerce stagnancy with innovative,{' '}
@@ -146,7 +145,8 @@ const IndexPage = () => {
             </div>
             <div className="showcase-card">
               <div className="showcase-card-head">
-                <img src={brands[0].img} alt="Meaningful text" /> <span>{brands[0].name}</span>
+                <img src={brands[0].img} alt="Meaningful text" />
+                <span>{brands[0].name}</span>
               </div>
               <img className="showcase-card-image" src={brands[0].showcase} />
               <div className="showcase-card-foot">
@@ -208,7 +208,8 @@ const IndexPage = () => {
           <div className="showcase-cards">
             <div className="showcase-card">
               <div className="showcase-card-head">
-                <img src={brands[0].img} alt="Meaningful text" /> <span>{brands[0].name}</span>
+                <img src={brands[0].img} alt="Meaningful text" />
+                <span>{brands[0].name}</span>
               </div>
               <img className="showcase-card-image" src={brands[0].showcase} />
               <div className="showcase-card-foot">

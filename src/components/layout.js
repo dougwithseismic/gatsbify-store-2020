@@ -5,13 +5,14 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
 
 import Navigation from './Common/Navigation'
 import Drawer from './Common/Drawer'
 import Basket from './Basket'
+import CartContext from './../context/cartContext'
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -24,9 +25,12 @@ const Layout = ({ children }) => {
     }
   `)
 
+  const { cart } = useContext(CartContext)
+
   return (
     <Fragment>
       <Drawer openedClass="cart-drawer-open" closedClass="cart-drawer-closed">
+      {/* Todo: Add logic to render different combos of components inside the drawer at will */}
         <Basket />
       </Drawer>
 

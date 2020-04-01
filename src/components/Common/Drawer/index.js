@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import './basket.scss'
+import './drawer.scss'
 
 import CartContext from './../../../context/cartContext'
 
